@@ -1,7 +1,35 @@
-## Robot Package Template
+## Robot in Simulation (ROS2, Gazebo)
 
-This is a GitHub template. You can make your own copy by clicking the green "Use this template" button.
+Differential drive robot 
 
-It is recommended that you keep the repo/package name the same, but if you do change it, ensure you do a "Find all" using your IDE (or the built-in GitHub IDE by hitting the `.` key) and rename all instances of `my_bot` to whatever your project's name is.
+# Requirements
+Install a ROS2 version matching your OS from the [official website](https://docs.ros.org/en/).
+In my case this is ROS 2 Jazzy for Ubuntu Noble 24.04 and as a result, the following instructions will be for Ubunutu.
 
-Note that each directory currently has at least one file in it to ensure that git tracks the files (and, consequently, that a fresh clone has direcctories present for CMake to find). These example files can be removed if required (and the directories can be removed if `CMakeLists.txt` is adjusted accordingly).
+Install colcon: `sudo apt install python3-colcon-common-extensions`
+
+# Build automatically (rerun required when adding a new file)
+`colcon build --symlink-install`
+
+from dev_ws/: `source install/setup.bash`
+`ros2 launch my_bot rsp.launch.p`
+
+## launch gazebo
+ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="-r empty.sdf"
+
+## spawn robot in gz
+ros2 run ros_gz_sim create -topic robot_description -name my_bot
+
+## launch gazebo simulation
+ros2 launch my_bot launch_sim.launch.py
+ros2 launch my_bot launch_sim.launch.py world:=src/my_bot/worlds/obstacles.world
+
+### keyboard input
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+tf2 (transforms)
+track robot coordinate frames over time
+
+urdf
+xml format for presenting a robot structure
+represent joints and their relation
