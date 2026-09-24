@@ -31,7 +31,7 @@
             <gz_frame_id>laser_frame</gz_frame_id>
             <update_rate>10</update_rate>
             <always_on>true</always_on>
-            <visualize>true</visualize>
+            <visualize>false</visualize>
             <lidar>
                 <scan>
                     <horizontal>
