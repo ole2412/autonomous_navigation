@@ -26,6 +26,9 @@ ros2 launch my_bot launch_sim.launch.py world:=src/my_bot/worlds/obstacles.world
 ### keyboard input
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
+## loda and activate controller by name
+ros2 run controller_manager spawner diff_cont
+
 tf2 (transforms)
 track robot coordinate frames over time
 

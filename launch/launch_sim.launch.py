@@ -51,21 +51,39 @@ def generate_launch_description():
     )
 
     # Bridge Gazebo topics to ROS
+    # z_ros2_control plugin natively publishes cmd_vel/odom/joint_states/tf -> they are not explicitly bridged.
     # Syntax: /topic@ros_msg_type[gz_msg_type  ([ = gz -> ros, ] = ros -> gz, @ = both)
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
-            '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
-            '/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
-            '/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
-            '/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model',
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
             '/camera/image_raw@sensor_msgs/msg/Image[gz.msgs.Image',
             '/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
         ],
         output='screen'
+    )
+
+    joint_state_broadcaster_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_broad'],
+    )
+
+    diff_drive_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['diff_cont'],
+    )
+
+    twist_stamper = Node(
+        package='twist_stamper',
+        executable='twist_stamper',
+        remappings=[
+            ('cmd_vel_in', '/cmd_vel'),
+            ('cmd_vel_out', '/diff_cont/cmd_vel'),
+        ],
     )
 
     # Launch them all!
@@ -75,4 +93,7 @@ def generate_launch_description():
         gazebo,
         spawn_entity,
         bridge,
+        joint_state_broadcaster_spawner,
+        diff_drive_spawner,
+        twist_stamper,
     ])
