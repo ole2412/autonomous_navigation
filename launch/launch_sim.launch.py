@@ -75,6 +75,10 @@ def generate_launch_description():
         package='controller_manager',
         executable='spawner',
         arguments=['diff_cont'],
+        remappings=[
+            ('/diff_cont/odom', '/odom'),
+            ('/diff_cont/tf', '/tf'),
+        ],
     )
 
     twist_stamper = Node(
