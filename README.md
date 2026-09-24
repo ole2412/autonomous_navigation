@@ -12,7 +12,7 @@ Install colcon: `sudo apt install python3-colcon-common-extensions`
 `colcon build --symlink-install`
 
 from dev_ws/: `source install/setup.bash`
-`ros2 launch my_bot rsp.launch.p`
+ros2 launch my_bot rsp.launch.py
 
 ## launch gazebo
 ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="-r empty.sdf"
@@ -20,8 +20,7 @@ ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="-r empty.sdf"
 ## spawn robot in gz
 ros2 run ros_gz_sim create -topic robot_description -name my_bot
 
-## launch gazebo simulation
-ros2 launch my_bot launch_sim.launch.py
+## launch gazebo simulation with custom world
 ros2 launch my_bot launch_sim.launch.py world:=src/my_bot/worlds/obstacles.world
 
 ### keyboard input
