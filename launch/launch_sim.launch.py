@@ -21,6 +21,14 @@ def generate_launch_description():
         description='World file to load (name of a built-in world or a path)'
     )
 
+    # Extra arguments for Gazebo (e.g. '-v 4' for verbose, '-s' for headless)
+    gazebo_args = LaunchConfiguration('gazebo_args')
+    gazebo_args_arg = DeclareLaunchArgument(
+        'gazebo_args',
+        default_value='',
+        description='Extra arguments to pass to Gazebo Sim'
+    )
+
     # Robot state publisher (publishes /robot_description), with sim time on
     rsp = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
@@ -31,12 +39,12 @@ def generate_launch_description():
 
     # Gazebo Harmonic, provided by the ros_gz_sim package.
     # -r = start running immediately, empty.sdf = the default empty world.
-    # Add '-v 4' for verbose output when debugging.
+    # Add extra args via gazebo_args:='-v 4' for verbose output when debugging.
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py'
         )]),
-        launch_arguments={'gz_args': ['-r ', world]}.items()
+        launch_arguments={'gz_args': ['-r ', gazebo_args, ' ', world]}.items()
     )
 
     # Spawn the robot from the robot_description topic.
@@ -93,6 +101,7 @@ def generate_launch_description():
     # Launch them all!
     return LaunchDescription([
         world_arg,
+        gazebo_args_arg,
         rsp,
         gazebo,
         spawn_entity,
