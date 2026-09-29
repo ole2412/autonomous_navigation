@@ -1,60 +1,103 @@
-## Robot in Simulation (ROS2, Gazebo)
+# Robot in Simulation (ROS2, Gazebo)
 
-Differential drive robot 
-Online Asynchronous SLAM
+In this work we built a differential drive robot with online asynchronous SLAM and autonomous navigation with ROS2 and Gazebo. 
 
-# Requirements
-Install a ROS2 version matching your OS from the [official website](https://docs.ros.org/en/).
-In my case this is ROS 2 Jazzy for Ubuntu Noble 24.04 and as a result, the following instructions will be for Ubunutu.
+**[Project Page](https://ole2412.github.io/ros-robot/)**
 
-Install colcon: `sudo apt install python3-colcon-common-extensions`
+<video width="100%" controls>
+  <source src="./assets/SLAM.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
-# Build automatically (rerun required when adding a new file)
-`colcon build --symlink-install`
+## Prerequisites
 
-from dev_ws/: 
+- **ROS2 Jazzy** (other versions may require adaptations)
+- **[slam_toolbox](https://github.com/SteveMacenski/slam_toolbox)**
+- **[nav2](https://docs.nav2.org/rolling/getting_started/build_and_install/local_installation/#local-installation)**
+- **[colcon](https://colcon.readthedocs.io/en/released/user/installation.html)**
+
+<!-- Install colcon with:
+```bash
+sudo apt install python3-colcon-common-extensions
+``` -->
+
+## Installation
+
+1. Build the workspace:
+```bash
+colcon build --symlink-install
+```
+
+2. Source the setup files:
+```bash
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
+```
 
-## launch gazebo
+## Quick Start
+
+### Basic Simulation
+
+Launch the Gazebo simulator with an empty world:
+```bash
 ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="-r empty.sdf"
+```
 
-## spawn robot in gz
+Spawn the robot into Gazebo:
+```bash
 ros2 run ros_gz_sim create -topic robot_description -name my_bot
+```
 
-## launch gazebo simulation with custom world
-ros2 launch my_bot launch_sim.launch.py world:=src/my_bot/worlds/obstacles.world
-
-
-## load and activate controller by name
+Load and activate the differential controller:
+```bash
 ros2 run controller_manager spawner diff_cont
+```
 
-# start rviz with my config
+Start RViz with the configuration:
+```bash
 rviz2 -d src/my_bot/config/drive.rviz
+```
 
-## provide drive input through rviz teleop panel gui interface
-## Alternatively input through keyboard interface
+### Teleoperation
+
+**Option 1: RViz GUI Panel**
+Use the teleop panel in RViz to control the robot.
+
+**Option 2: Keyboard Control**
+```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
 
-# Simple SLAM
-ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true slam_params_file:=./src/my_bot/config/mapper_params_online_async.yaml 
+## SLAM Workflow
 
-ros2 run nav2_amcl amcl --ros-args -p use_sim_time:=true
+Launch the simulation with a custom world:
+```bash
+ros2 launch my_bot launch_sim.launch.py world:=src/my_bot/worlds/obstacles.world
+```
 
-ros2 launch nav2_bringup localization_launch.py   map:=/home/ole/Documents/dev_ws/my_map_save.yaml   use_sim_time:=true
+Start the online asynchronous SLAM node:
+```bash
+ros2 launch slam_toolbox online_async_launch.py \
+  use_sim_time:=true \
+  slam_params_file:=./src/my_bot/config/mapper_params_online_async.yaml
+```
 
-ros2 run nav2_util lifecycle_bringup amcl
+Open RViz:
+```bash
+rviz2 -d src/my_bot/config/drive.rviz
+```
 
-in rviz clik "2D Pose Estimate" and suggest where the robot might be
+In RViz, click **"2D Pose Estimate"** to provide an initial pose estimate for localization.
 
-## Requirements
-ros2
-slam_toolbox
+## Navigation and Path Planning
 
+Start the Nav2 navigation stack:
+```bash
+ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true
+```
 
-tf2 (transforms)
-track robot coordinate frames over time
+You can now set navigation goals in RViz using the "Nav2 Goal" button.
 
-urdf
-xml format for presenting a robot structure
-represent joints and their relation
+## Acknowledgments
+
+This project is inspired by the excellent ROS2 robot tutorial series by [Josh Newans](https://github.com/joshnewans). See the [full playlist](https://www.youtube.com/watch?v=OWeLUSzxMsw&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT&index=1) for more details.
