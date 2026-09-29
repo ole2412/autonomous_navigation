@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Radar-Specific Features for Radar-Camera 3D Object Detection in Autonomous Driving">
-  <meta name="keywords" content="3D object detection, radar-camera fusion, autonomous driving, perception, sensor fusion,neural networks,k-radar">
+        content="Differential-drive robot with online SLAM and autonomous navigation using ROS2, Gazebo, slam_toolbox, and Nav2">
+  <meta name="keywords" content="ROS2, autonomous navigation, SLAM, Gazebo, differential-drive robot, nav2, ros2_control">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Radar-Camera 3D Object Detection</title>
+  <title>Autonomous Navigation in ROS2</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -19,11 +19,11 @@
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
+  <script defer src="./static/js/bulma-carousel.min.js"></script>
+  <script defer src="./static/js/bulma-slider.min.js"></script>
+  <script defer src="./static/js/index.js"></script>
 </head>
 <body>
 
@@ -48,18 +48,21 @@
           More Research
         </a>
         <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://ole2412.github.io/ROS-robot/">
-            Robot SLAM
+          <a class="navbar-item" href="https://ole2412.github.io/radar-camera-fusion/">
+            RC-Fusion for Autonomous Driving
           </a>
-            <a class="navbar-item" href="https://ole2412.github.io/Face-Reconstruction/">
+            <a class="navbar-item" href="https://ole2412.github.io/grasp-planning/">
+            Grasp Planning in 6-DoF
+          </a>
+            <!-- <a class="navbar-item" href="https://ole2412.github.io/Face-Reconstruction/">
             Face Reconstruction
           </a>
           <a class="navbar-item" href="https://ole2412.github.io/llm_threat_detection/">
             Threat Detection in LLMs
           </a>
-            <a class="navbar-item" href="https://ole2412.github.io/multi_camera_tracking/">
+          <a class="navbar-item" href="https://ole2412.github.io/multi_camera_tracking/">
             Multi-Camera Pedestrian Tracking
-          </a>
+          </a> -->
         </div>
       </div>
     </div>
@@ -72,8 +75,8 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Radar-Specific Features for Radar-Camera 3D Object Detection in Autonomous Driving</h1>
-          <h2 class="title is-5 publication-title">Master's Thesis 2026</h2>
+          <h1 class="title is-1 publication-title">Autonomous Navigation in ROS2</h1>
+          <h2 class="title is-5 publication-title">Project 2026</h2>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://ole2412.github.io/">Ole Banning</a>
@@ -118,7 +121,7 @@
               </span> -->
               <!-- Code Link. -->
               <span class="link-block">
-                <a href="https://github.com/ole2412/radar-camera-fusion"
+                <a href="https://github.com/ole2412/ROS-in-simulation"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
@@ -138,12 +141,12 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video autoplay controls muted loop height="100%">
-        <source src="static/videos/ours_train_17_web.mp4"
+      <video autoplay controls muted loop playsinline height="100%">
+        <source src="static/videos/SLAM.mp4"
                 type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
-        Our method detects 3D objects from radar and camera input using radar-specific feature extraction and sparse frustum fusion to overcome diverse environmental conditions. 
+        In this work I built a differential drive robot with online asynchronous SLAM and autonomous navigation with ROS2 and Gazebo.
       </h2>
     </div>
   </div>
@@ -155,15 +158,28 @@
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
+        <h2 class="title is-3">Approach</h2>
         <div class="content has-text-justified">
-          <p>
-            Autonomous driving relies heavily on perception quality. However, the most common sensor setup, Camera-LiDAR fusion, is costly, degrades under low light and adverse weather, and cannot directly measure the velocity of target objects. To this end, we propose a Camera-Radar fusion method with a radar-specific feature encoder that overcomes the limitations of LiDAR-based backbones for radar data. First, we extract image and radar features using backbones tailored to each sensor modality. We then aggregate radar features with predefined 3D proposals and combine the resulting queries with frustum-fused Camera-Radar features through perspective aggregation. This allows each modality to contribute its complementary strengths. We incorporate local attention to reduce computational cost while maintaining accuracy. Finally, a feed-forward network predicts the 3D detections. We demonstrate that our detector outperforms the baselines in both 3D and BEV detection accuracy, effectively unlocking radar as a first-class modality for 3D perception in autonomous driving.
-          </p>
+        <p>
+          We simulate a differential-drive robot in Gazebo and run SLAM and goal-based navigation in three steps.
+          First, the robot builds an occupancy grid map of its environment using SLAM. Next, we select a goal point on that map.
+          Finally, the robot plans a path and autonomously drives to the goal.
+          Throughout, we show what the robot perceives in ROS 2 using RViz: its laser scans, the camera input and the map as it forms.
+        </p>
+
+        <p>The approach is built on the following packages:</p>
+        <ul>
+          <li><strong>Robot description (xacro/URDF):</strong> the robot model is assembled from separate xacro files for the chassis, wheels, lidar, and camera.</li>
+          <li><strong>ros2_control:</strong> a differential-drive controller turns velocity commands into wheel speeds and computes wheel odometry from the wheel encoders.</li>
+          <!-- <li><strong>Lidar and camera sensors:</strong> the lidar publishes laser scans used for mapping and obstacle detection, and the camera streams images.</li> -->
+          <li><strong>slam_toolbox:</strong> matches laser scans against each other to build the environment map and continuously correct the robot's position within it.</li>
+          <li><strong>Nav2:</strong> plans a global path to the goal, follows it with a local controller and avoids obstacles using costmaps.</li>
+          <li><strong>tf2 (transform tree):</strong> links the <code>map → odom → base_link → sensor</code> frames so that every component shares a consistent picture of where the robot and its sensors are.</li>
+        </ul>
         </div>
       </div>
     </div>
-    <!--/ Abstract. -->
+    <!--/ Abstract.
 
     <!-- Paper video. -->
     <!-- <div class="columns is-centered has-text-centered">
@@ -177,7 +193,7 @@
     <!--/ Paper video. -->
 
     <!-- Method details. -->
-    <div class="columns is-centered has-text-centered">
+    <!-- <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
             <h2 class="title is-3">Three-Stage Perception</h2>
             <div class="content has-text-justified">
@@ -192,7 +208,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> -->
   </div>
 </section>
 
@@ -200,13 +216,9 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">3D Object Detection on the <a
-              href="https://github.com/kaist-avelab/K-Radar">K-Radar Dataset</a></h2>
+        <h2 class="title is-3">Simulation</h2>
         <div class="content has-text-justified">
-          <p>              
-              We compare our method against recent state-of-the-art 3D object detection methods on diverse scenarios of the K-Radar dataset.
-              We provide the ground truth visuals for proper comparison.
-          </p>
+
         </div>
       </div>
     </div>
@@ -214,36 +226,36 @@
       <div class="column">
         <div id="input-videos-carousel" class="results-carousel results-vertical">
           <div class="item">
-            <video autoplay controls muted height="100%">
-              <source src="static/videos/teaser_seq17_grid.mp4" type="video/mp4">
+            <video autoplay controls muted playsinline height="100%">
+              <source src="static/videos/gazebo.mp4" type="video/mp4">
             </video>
-            <p class="results-caption">sunny, day, university</p>
+            <p class="results-caption">Gazebo Environment</p>
           </div>
           <div class="item">
-            <video autoplay controls muted height="100%">
-              <source src="static/videos/teaser_seq24_grid.mp4" type="video/mp4">
+            <video autoplay controls muted playsinline height="100%">
+              <source src="static/videos/SLAM.mp4" type="video/mp4">
             </video>
-            <p class="results-caption">rain, night, urban</p>
+            <p class="results-caption">SLAM</p>
           </div>
           <div class="item">
-            <video autoplay controls muted height="100%">
-              <source src="static/videos/teaser_seq44_grid.mp4" type="video/mp4">
+            <video autoplay controls muted playsinline height="100%" onloadedmetadata="this.playbackRate = 3.5">
+              <source src="static/videos/navigation.mp4" type="video/mp4">
             </video>
-            <p class="results-caption">fog, day, parking space</p>
+            <p class="results-caption">Autonomous Navigation</p>
           </div>
-          <div class="item">
-            <video autoplay controls muted height="100%">
+          <!-- <div class="item">
+            <video autoplay controls muted playsinline height="100%">
               <source src="static/videos/teaser_seq56_grid.mp4" type="video/mp4">
             </video>
             <p class="results-caption">heavy snow, day, highway</p>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="BibTeX">
+<!-- <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
     <pre><code>
@@ -257,7 +269,7 @@
   }
 </code></pre>
   </div>
-</section>
+</section> -->
 
 <footer class="footer">
   <div class="container">
@@ -266,7 +278,7 @@
          href="static/images/temp.pdf">
         <i class="fas fa-file-pdf"></i>
       </a> -->
-      <a class="icon-link" href="https://github.com/ole2412" class="external-link" disabled>
+      <a class="icon-link external-link" href="https://github.com/ole2412">
         <i class="fab fa-github"></i>
       </a>
     </div>
