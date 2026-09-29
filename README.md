@@ -2,7 +2,7 @@
 
 In this work we built a differential drive robot with online asynchronous SLAM and autonomous navigation with ROS2 and Gazebo. 
 
-**[Project Page](https://ole2412.github.io/ros-robot/)**
+**[Project Page](https://ole2412.github.io/autonomous_navigation/)**
 
 ![Gazebo robot simulation](./assets/gazebo.png)
 
