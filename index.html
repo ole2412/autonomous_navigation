@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Radar-Specific Features for Radar-Camera 3D Object Detection in Autonomous Driving">
+  <meta name="keywords" content="3D object detection, radar-camera fusion, autonomous driving, perception, sensor fusion,neural networks,k-radar">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radar-Camera 3D Object Detection</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://ole2412.github.io/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://ole2412.github.io/ROS-robot/">
+            Robot SLAM
+          </a>
+            <a class="navbar-item" href="https://ole2412.github.io/Face-Reconstruction/">
+            Face Reconstruction
+          </a>
+          <a class="navbar-item" href="https://ole2412.github.io/llm_threat_detection/">
+            Threat Detection in LLMs
+          </a>
+            <a class="navbar-item" href="https://ole2412.github.io/multi_camera_tracking/">
+            Multi-Camera Pedestrian Tracking
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Radar-Specific Features for Radar-Camera 3D Object Detection in Autonomous Driving</h1>
+          <h2 class="title is-5 publication-title">Master's Thesis 2026</h2>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://ole2412.github.io/">Ole Banning</a>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Technical University of Munich</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link (Original) -->
+              <!-- <span class="link-block">
+                <a href="static/images/file.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+              <!-- arXiv Link. -->
+              <!-- <span class="link-block">
+                <a href="https://arxiv.org/abs/123"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span> -->
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/ole2412/radar-camera-fusion"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video autoplay controls muted loop height="100%">
+        <source src="static/videos/ours_train_17_web.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        Our method detects 3D objects from radar and camera input using radar-specific feature extraction and sparse frustum fusion to overcome diverse environmental conditions. 
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Autonomous driving relies heavily on perception quality. However, the most common sensor setup, Camera-LiDAR fusion, is costly, degrades under low light and adverse weather, and cannot directly measure the velocity of target objects. To this end, we propose a Camera-Radar fusion method with a radar-specific feature encoder that overcomes the limitations of LiDAR-based backbones for radar data. First, we extract image and radar features using backbones tailored to each sensor modality. We then aggregate radar features with predefined 3D proposals and combine the resulting queries with frustum-fused Camera-Radar features through perspective aggregation. This allows each modality to contribute its complementary strengths. We incorporate local attention to reduce computational cost while maintaining accuracy. Finally, a feed-forward network predicts the 3D detections. We demonstrate that our detector outperforms the baselines in both 3D and BEV detection accuracy, effectively unlocking radar as a first-class modality for 3D perception in autonomous driving.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+
+    <!-- Method details. -->
+    <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+            <h2 class="title is-3">Three-Stage Perception</h2>
+            <div class="content has-text-justified">
+                <p class="has-text-centered">
+                    <img src="static/videos/method.png" alt="method overview" style="display: inline-block; max-width: 100%;">
+                </p>
+                <p>
+                    We propose a three stage method that detects 3D objects from radar and camera input.
+                    First, we extract image and radar features using backbone networks trained on the respective modalities.
+                    We then aggregate the radar features with predefined 3D proposals and combine the resulting queries with frustum-fused Camera-Radar features through perspective aggregation.
+                    Finally, we leverage the feature maps to generate the 3D detections.
+                </p>
+            </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">3D Object Detection on the <a
+              href="https://github.com/kaist-avelab/K-Radar">K-Radar Dataset</a></h2>
+        <div class="content has-text-justified">
+          <p>              
+              We compare our method against recent state-of-the-art 3D object detection methods on diverse scenarios of the K-Radar dataset.
+              We provide the ground truth visuals for proper comparison.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column">
+        <div id="input-videos-carousel" class="results-carousel results-vertical">
+          <div class="item">
+            <video autoplay controls muted height="100%">
+              <source src="static/videos/teaser_seq17_grid.mp4" type="video/mp4">
+            </video>
+            <p class="results-caption">sunny, day, university</p>
+          </div>
+          <div class="item">
+            <video autoplay controls muted height="100%">
+              <source src="static/videos/teaser_seq24_grid.mp4" type="video/mp4">
+            </video>
+            <p class="results-caption">rain, night, urban</p>
+          </div>
+          <div class="item">
+            <video autoplay controls muted height="100%">
+              <source src="static/videos/teaser_seq44_grid.mp4" type="video/mp4">
+            </video>
+            <p class="results-caption">fog, day, parking space</p>
+          </div>
+          <div class="item">
+            <video autoplay controls muted height="100%">
+              <source src="static/videos/teaser_seq56_grid.mp4" type="video/mp4">
+            </video>
+            <p class="results-caption">heavy snow, day, highway</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+  @mastersthesis{banning_radar-specific_2026,
+    author = {Banning, Ole},
+    title  = {Radar-Specific Features for Radar-Camera 3D Object Detection},
+    school = {Technical University of Munich},
+    year   = {2026},
+    type   = {Master's thesis},
+    note   = {In preparation},
+  }
+</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <!-- <a class="icon-link"
+         href="static/images/temp.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a> -->
+      <a class="icon-link" href="https://github.com/ole2412" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p> Website source code borrowed from <a
+              href="https://github.com/lukasHoel/video_to_world/tree/website/">here</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
