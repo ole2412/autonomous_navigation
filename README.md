@@ -1,6 +1,7 @@
 ## Robot in Simulation (ROS2, Gazebo)
 
 Differential drive robot 
+Online Asynchronous SLAM
 
 # Requirements
 Install a ROS2 version matching your OS from the [official website](https://docs.ros.org/en/).
@@ -11,8 +12,9 @@ Install colcon: `sudo apt install python3-colcon-common-extensions`
 # Build automatically (rerun required when adding a new file)
 `colcon build --symlink-install`
 
-from dev_ws/: `source install/setup.bash`
-ros2 launch my_bot rsp.launch.py
+from dev_ws/: 
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
 
 ## launch gazebo
 ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="-r empty.sdf"
@@ -33,6 +35,22 @@ rviz2 -d src/my_bot/config/drive.rviz
 ## provide drive input through rviz teleop panel gui interface
 ## Alternatively input through keyboard interface
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+# Simple SLAM
+ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true slam_params_file:=./src/my_bot/config/mapper_params_online_async.yaml 
+
+ros2 run nav2_amcl amcl --ros-args -p use_sim_time:=true
+
+ros2 launch nav2_bringup localization_launch.py   map:=/home/ole/Documents/dev_ws/my_map_save.yaml   use_sim_time:=true
+
+ros2 run nav2_util lifecycle_bringup amcl
+
+in rviz clik "2D Pose Estimate" and suggest where the robot might be
+
+## Requirements
+ros2
+slam_toolbox
+
 
 tf2 (transforms)
 track robot coordinate frames over time
