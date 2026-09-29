@@ -89,6 +89,8 @@ def generate_launch_description():
         ],
     )
 
+    # Converts plain Twist on /cmd_vel into the TwistStamped that Jazzy's
+    # diff_drive_controller requires on /diff_cont/cmd_vel.
     twist_stamper = Node(
         package='twist_stamper',
         executable='twist_stamper',
@@ -96,6 +98,16 @@ def generate_launch_description():
             ('cmd_vel_in', '/cmd_vel'),
             ('cmd_vel_out', '/diff_cont/cmd_vel'),
         ],
+    )
+
+    twist_mux_params = os.path.join(
+        get_package_share_directory(package_name), 'config', 'twist_mux.yaml'
+    )
+    twist_mux = Node(
+        package='twist_mux',
+        executable='twist_mux',
+        parameters=[twist_mux_params, {'use_sim_time': True}],
+        remappings=[('cmd_vel_out', '/cmd_vel')],
     )
 
     # Launch them all!
@@ -109,4 +121,5 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         diff_drive_spawner,
         twist_stamper,
+        twist_mux,
     ])
